@@ -1,5 +1,11 @@
 var Btree = require('./exercise0.js');
 
+/**
+ * minValue() calculates the minimum value of the tree
+ *
+ * @author Dan Dart
+ * @return int
+**/
 Btree.Tree.prototype.minValue = function() {
 	var _this = this,
 		minValue = _this.getValue();

@@ -1,5 +1,11 @@
 var Btree = require('./exercise0.js');
 
+/**
+ * printTree() returns a string with all the elements in order
+ *
+ * @author Dan Dart
+ * @return string
+**/
 Btree.Tree.prototype.printTree = function() {
 	var _this = this,
 		str = '';

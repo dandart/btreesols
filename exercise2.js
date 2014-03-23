@@ -1,5 +1,11 @@
 var Btree = require('./exercise0.js');
 
+/**
+ * size() calculates the number of nodes.
+ *
+ * @author Dan Dart
+ * @return int
+**/
 Btree.Tree.prototype.size = function() {
 	var _this = this,
 		size = 1;

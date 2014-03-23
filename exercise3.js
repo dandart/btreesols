@@ -1,5 +1,11 @@
 var Btree = require('./exercise0.js');
 
+/**
+ * maxDepth() calculates the maximum depth of the tree
+ *
+ * @author Dan Dart
+ * @return int
+**/
 Btree.Tree.prototype.maxDepth = function() {
 	var _this = this,
 		// No node tree is empty.

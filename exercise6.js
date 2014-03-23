@@ -1,5 +1,11 @@
 var Btree = require('./exercise0.js');
 
+/**
+ * printPostOrder() returns a string with the leaves first, then roots.
+ *
+ * @author Dan Dart
+ * @return string
+**/
 Btree.Tree.prototype.printPostOrder = function() {
 	var _this = this,
 		str = '';
