@@ -1,127 +1,178 @@
-var Btree = {};
+(function() {
+    "use strict";
+    
+    var Btree = {};
 
-// I would get an interface for the Node and Tree
-// since they implement the same methods...
+    // I would get an interface for the Node and Tree
+    // since they implement the same methods...
 
-/**
- * A Node holds a value.
- * It needs to be written once and
- * once only.
- *
- * @author Dan Dart
-**/
-Btree.Node = function(nInitVal) {
-	var _this = this;
-	if ('number' !== typeof nInitVal) {
-		throw {
-			name: 'LogicError',
-			message: 'Node constructor: nInitVal is not a number.'
-		};
-	}
+    /**
+     * A Node holds a value.
+     * It needs to be written once and
+     * once only.
+     *
+     * @author Dan Dart
+    **/
+    Btree.Node = function(nInitVal) {
+        var _this = this,
+            _nValue;
+        if ('number' !== typeof nInitVal) {
+            throw {
+                name: 'LogicError',
+                message: 'Node constructor: nInitVal is not a number.'
+            };
+        }
 
-	_this._nValue = nInitVal;
+        _nValue = nInitVal;
 
-	// Not using the new ECMA getters yet
-	_this.getValue = function() {
-		return _this._nValue;
-	};
-};
+        // Not using the new ECMA getters yet
+        _this.getValue = function() {
+            return _nValue;
+        };
+    };
 
-/**
- * A tree holds a node as its root,
- * and up to 2 more nodes or trees as._branches.
- * recursively.
- *
- * @author Dan Dart
-**/
-Btree.Tree = function(rootNode) {
-	var _this = this,
-		c_MAXBRANCHES = 2;
+    /**
+     * A tree holds a node as its root,
+     * and up to 2 more nodes or trees as._branches.
+     * recursively.
+     *
+     * @author Dan Dart
+    **/
+    Btree.Tree = function(rootNode) {
+        var _this = this,
+            _rootNode = rootNode,
+            _branches = {
+                left: null,
+                right: null
+            };
 
-	_this._rootNode = rootNode;
-	_this._branches = {
-		left: null,
-		right: null
-	};
+        /**
+         * Returns the root node value.
+         *
+         * @return Number
+         * @author Dan Dart
+        **/
+        _this.getValue = function() {
+            return _rootNode.getValue();
+        };
 
-	_this.getValue = function() {
-		return _this._rootNode.getValue();
-	}
+        // Getters for the branches so that new code
+        // does not fiddle with private values.
+        _this.getLeft = function() {
+            return _branches.left;
+        };
 
-	/**
-	 * Looks up a value in the tree
-	 *
-	 * @param Number nSearch
-	 * @return true if present, false if not present
-	 * @author Dan Dart
-	**/
-	_this.lookup = function(nSearch) {
-		// forEach breaking is fugly
-		// I'd use "let" here but we're foregoing new ECMA features
+        _this.getRight = function() {
+            return _branches.right;
+        };
 
-		// If the root node matches, then we have found it.
-		if (nSearch == _this._rootNode.getValue()) {
-			return true;
-		}
-		// If there is a left node, and the search is less than the root
-		// then ask the left to search.
-		if (nSearch < _this._rootNode.getValue() &&
-			null !== _this._branches.left) {
-			return _this._branches.left.lookup(nSearch);
-		}
+        /**
+         * Returns true if this tree or subtree has a left branch
+         *
+         * @return bool
+         * @author Dan Dart
+        **/
+        _this.hasLeft = function() {
+            return null !== _this.getLeft();
+        };
 
-		// If there is a right node, and the search is greater than the root
-		// then ask the right to search.
-		if (nSearch < _this._rootNode.getValue() &&
-			null !== _this._branches.right) {
-			return _this._branches.right.lookup(nSearch);
-		}
+        /**
+         * Returns true if this tree or subtree has a right branch
+         *
+         * @return bool
+         * @author Dan Dart
+        **/
+        _this.hasRight = function() {
+            return null !== _this.getRight();
+        };
 
-		// If everything failed then return false.
-		return false;
-	};
+        /**
+         * Looks up a value in the tree
+         *
+         * @param Number nSearch
+         * @return true if present, false if not present
+         * @author Dan Dart
+        **/
+        _this.lookup = function(nSearch) {
+            // forEach breaking is fugly
+            // I'd use "let" here but we're foregoing new ECMA features
 
-	_this.insert = function(nValue) {
-		if (nValue == _this.getValue()) {
-			throw {name: 'LogicError', message: nValue+' has already been entered.'};
-		}
+            // If the root node matches, then we have found it.
+            if (nSearch == _rootNode.getValue()) {
+                return true;
+            }
+            // If there is a left node, and the search is less than the root
+            // then ask the left to search.
+            if (nSearch < _rootNode.getValue() &&
+                _this.hasLeft()) {
+                return _this.getLeft().lookup(nSearch);
+            }
 
-		// Needs to go on the left?
-		if (nValue < _this.getValue()) {
-			if (null == _this._branches.left) {
-				return _this._branches.left = new Btree.Tree(new Btree.Node(nValue));
-			}
-			return _this._branches.left.insert(nValue);
-		}
+            // If there is a right node, and the search is greater than the root
+            // then ask the right to search.
+            if (nSearch < _rootNode.getValue() &&
+                _this.hasRight()) {
+                return _this.getRight().lookup(nSearch);
+            }
 
-		if (nValue > _this.getValue()) {
-			if (null == _this._branches.right) {
-				return _this._branches.right = new Btree.Tree(new Btree.Node(nValue));
-			}
-			return _this._branches.right.insert(nValue);
-		}
-	}
+            // If everything failed then return false.
+            return false;
+        };
 
-	/**
-	 * Print that tree.
-	 * Currently needs to be printed as a nice diagonal...
-	 *
-	 * @return string
-	 * @author Dan Dart
-	**/
-	_this.print = function() {
-		var str = '';
+        /**
+         * Inserts a value into the btree
+         *
+         * @return null
+         * @throws LogicError if value alreay exists
+         * @author Dan Dart
+        **/
+        _this.insert = function(nValue) {
+            if (nValue == _this.getValue()) {
+                throw {name: 'LogicError', message: nValue+' has already been entered.'};
+            }
 
-		if (null !== _this._branches.left) {
-			str += (_this._branches.left.dump());
-		}
-		str += _this.getValue();
-		if (null !== _this._branches.right) {
-			str += (_this._branches.right.dump());
-		}
+            // Needs to go on the left?
+            if (nValue < _this.getValue()) {
+                if (!_this.hasLeft()) {
+                    _branches.left = new Btree.Tree(new Btree.Node(nValue));
+                    return;
+                }
+                 _this.getLeft().insert(nValue);
+                return;
+            }
 
-		return str;
-	}
-};
+            // Needs to go on the right?
+            if (nValue > _this.getValue()) {
+                if (!_this.hasRight()) {
+                    _branches.right = new Btree.Tree(new Btree.Node(nValue));
+                    return;
+                }
+                _this.getRight().insert(nValue);
+                return;
+            }
+        };
 
-module.exports = Btree;
+        /**
+         * Print that tree.
+         * Currently needs to be printed as a nice diagonal...
+         *
+         * @return string
+         * @author Dan Dart
+        **/
+        _this.print = function() {
+            var str = '';
+
+            if (_this.hasLeft()) {
+                str += (_this.getLeft().print());
+            }
+            str += _this.getValue();
+            if (_this.hasRight()) {
+                str += (_this.getRight().print());
+            }
+
+            return str;
+        };
+    };
+
+    module.exports = Btree;
+})();

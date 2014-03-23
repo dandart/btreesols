@@ -1,31 +1,35 @@
-var Btree = require('./exercise0.js');
+(function() {
+    "use strict";
 
-/**
- * printTree() returns a string with all the elements in order
- *
- * @author Dan Dart
- * @return string
-**/
-Btree.Tree.prototype.printTree = function() {
-	var _this = this,
-		str = '';
-	if (null !== _this._branches.left) {
-		str += (_this._branches.left.printTree());
-	}
-	str += _this.getValue()+' ';
-	if (null !== _this._branches.right) {
-		str += (_this._branches.right.printTree());
-	}
+    var Btree = require('./exercise0.js');
 
-	return str;
-}
+    /**
+     * printTree() returns a string with all the elements in order
+     *
+     * @author Dan Dart
+     * @return string
+    **/
+    Btree.Tree.prototype.printTree = function() {
+        var _this = this,
+            str = '';
+        if (_this.hasLeft()) {
+            str += (_this.getLeft().printTree());
+        }
+        str += _this.getValue()+' ';
+        if (_this.hasRight()) {
+            str += (_this.getRight().printTree());
+        }
 
-var node = new Btree.Node(4);
-	tree = new Btree.Tree(node);
+        return str;
+    };
 
-tree.insert(2);
-tree.insert(5);
-tree.insert(1);
-tree.insert(3);
+    var node = new Btree.Node(4),
+        tree = new Btree.Tree(node);
 
-console.log(tree.printTree());
+    tree.insert(2);
+    tree.insert(5);
+    tree.insert(1);
+    tree.insert(3);
+
+    console.log(tree.printTree());
+})();

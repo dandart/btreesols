@@ -1,31 +1,35 @@
-var Btree = require('./exercise0.js');
+(function() {
+    "use strict";
 
-/**
- * printPostOrder() returns a string with the leaves first, then roots.
- *
- * @author Dan Dart
- * @return string
-**/
-Btree.Tree.prototype.printPostOrder = function() {
-	var _this = this,
-		str = '';
-	if (null !== _this._branches.left) {
-		str += (_this._branches.left.printPostOrder());
-	}
-	if (null !== _this._branches.right) {
-		str += (_this._branches.right.printPostOrder());
-	}
-	str += _this.getValue()+' ';
+    var Btree = require('./exercise0.js');
 
-	return str;
-}
+    /**
+     * printPostOrder() returns a string with the leaves first, then roots.
+     *
+     * @author Dan Dart
+     * @return string
+    **/
+    Btree.Tree.prototype.printPostOrder = function() {
+        var _this = this,
+            str = '';
+        if (_this.hasLeft()) {
+            str += (_this.getLeft().printPostOrder());
+        }
+        if (_this.hasRight()) {
+            str += (_this.getRight().printPostOrder());
+        }
+        str += _this.getValue()+' ';
 
-var node = new Btree.Node(4);
-	tree = new Btree.Tree(node);
+        return str;
+    };
 
-tree.insert(2);
-tree.insert(5);
-tree.insert(1);
-tree.insert(3);
+    var node = new Btree.Node(4),
+        tree = new Btree.Tree(node);
 
-console.log(tree.printPostOrder());
+    tree.insert(2);
+    tree.insert(5);
+    tree.insert(1);
+    tree.insert(3);
+
+    console.log(tree.printPostOrder());
+})();

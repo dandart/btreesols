@@ -1,32 +1,37 @@
-var Btree = require('./exercise0.js');
+(function() {
+    "use strict";
 
-/**
- * size() calculates the number of nodes.
- *
- * @author Dan Dart
- * @return int
-**/
-Btree.Tree.prototype.size = function() {
-	var _this = this,
-		size = 1;
+    var Btree = require('./exercise0.js');
 
-	if (null !== _this._branches.left) {
-		size += _this._branches.left.size();
-	}
+    /**
+     * size() calculates the number of nodes.
+     *
+     * @author Dan Dart
+     * @return int
+    **/
+    Btree.Tree.prototype.size = function() {
+        var _this = this,
+            size = 1;
 
-	if (null !== _this._branches.right) {
-		size += _this._branches.right.size();
-	}
+        if (_this.hasLeft()) {
+            size += _this.getLeft().size();
+        }
 
-	return size;
-}
+        if (_this.hasRight()) {
+            size += _this.getRight().size();
+        }
 
-var node = new Btree.Node(4);
-	tree = new Btree.Tree(node);
+        return size;
+    };
 
-tree.insert(2);
-tree.insert(5);
-tree.insert(1);
-tree.insert(3);
+    var node = new Btree.Node(4),
+        tree = new Btree.Tree(node);
 
-console.log(tree.size());
+    tree.insert(2);
+    tree.insert(5);
+    tree.insert(1);
+    tree.insert(3);
+
+    console.log(tree.size());
+
+})();

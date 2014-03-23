@@ -1,10 +1,13 @@
-var Btree = require('./exercise0.js');
+(function() {
+    "use strict";
 
-var node = new Btree.Node(2);
-	tree = new Btree.Tree(node);
+    var Btree = require('./exercise0.js'),
+        node = new Btree.Node(2),
+        tree = new Btree.Tree(node);
 
-tree.insert(1);
-tree.insert(3);
+    tree.insert(1);
+    tree.insert(3);
 
-// This doesn't produce the desired effect yet
-console.log(tree.print());
+    // This doesn't produce the desired effect yet
+    console.log(tree.print());
+})();

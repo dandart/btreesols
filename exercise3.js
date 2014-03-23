@@ -1,40 +1,44 @@
-var Btree = require('./exercise0.js');
+(function() {
+    "use strict";
 
-/**
- * maxDepth() calculates the maximum depth of the tree
- *
- * @author Dan Dart
- * @return int
-**/
-Btree.Tree.prototype.maxDepth = function() {
-	var _this = this,
-		// No node tree is empty.
-		depth = 1,
-		maxDepthOfLeaves = 0;
+    var Btree = require('./exercise0.js');
 
-	if (null !== _this._branches.left) {
-		maxDepthOfLeaves = Math.max(
-			maxDepthOfLeaves,
-			_this._branches.left.maxDepth()
-		);
-	}
+    /**
+     * maxDepth() calculates the maximum depth of the tree
+     *
+     * @author Dan Dart
+     * @return int
+    **/
+    Btree.Tree.prototype.maxDepth = function() {
+        var _this = this,
+            // No node tree is empty.
+            depth = 1,
+            maxDepthOfLeaves = 0;
 
-	if (null !== _this._branches.right) {
-		maxDepthOfLeaves = Math.max(
-			maxDepthOfLeaves,
-			_this._branches.right.maxDepth()
-		);
-	}
+        if (_this.hasLeft()) {
+            maxDepthOfLeaves = Math.max(
+                maxDepthOfLeaves,
+                _this.getLeft().maxDepth()
+            );
+        }
 
-	return maxDepthOfLeaves + depth;
-}
+        if (_this.hasRight()) {
+            maxDepthOfLeaves = Math.max(
+                maxDepthOfLeaves,
+                _this.getRight().maxDepth()
+            );
+        }
 
-var node = new Btree.Node(4);
-	tree = new Btree.Tree(node);
+        return maxDepthOfLeaves + depth;
+    };
 
-tree.insert(2);
-tree.insert(5);
-tree.insert(1);
-tree.insert(3);
+    var node = new Btree.Node(4),
+        tree = new Btree.Tree(node);
 
-console.log(tree.maxDepth());
+    tree.insert(2);
+    tree.insert(5);
+    tree.insert(1);
+    tree.insert(3);
+
+    console.log(tree.maxDepth());
+})();
