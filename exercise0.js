@@ -39,8 +39,13 @@
      * @author Dan Dart
     **/
     Btree.Tree = function(rootNode) {
-        var _this = this,
-            _rootNode = rootNode,
+        var _this = this;
+
+        if (!(rootNode instanceof Btree.Node)) {
+            throw {name: 'LogicError', message: 'Tree accepts only a type of Node.'};
+        }
+
+        var _rootNode = rootNode,
             _branches = {
                 left: null,
                 right: null
@@ -165,7 +170,7 @@
             if (_this.hasLeft()) {
                 str += (_this.getLeft().print());
             }
-            str += _this.getValue();
+            str += _this.getValue() + ' ';
             if (_this.hasRight()) {
                 str += (_this.getRight().print());
             }
