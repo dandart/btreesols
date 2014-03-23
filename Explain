@@ -1,0 +1,24 @@
+      [2]
+    [/] [\]
+  [1]     [3]
+
+| | | | | | | |
+| | | | |2| | |
+| | | |/| |\| |
+| | |1| | | |3|
+| |/| |\| | | |
+|0| | | |1|½| |
+
+Node {
+	Value
+}
+
+Tree {
+	RootNode
+	LeftTree {
+		RootNode
+	}
+	RightTree {
+		RootNode
+	}
+}
