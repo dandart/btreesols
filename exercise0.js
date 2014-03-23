@@ -64,10 +64,16 @@
         // Getters for the branches so that new code
         // does not fiddle with private values.
         _this.getLeft = function() {
+            if (!_this.hasLeft()) {
+                throw {name: 'LogicException', message: 'Tried to access left branch but it did not exist.'};
+            }
             return _branches.left;
         };
 
         _this.getRight = function() {
+            if (!_this.hasRight()) {
+                throw {name: 'LogicException', message: 'Tried to access right branch but it did not exist.'};
+            }
             return _branches.right;
         };
 
@@ -78,7 +84,7 @@
          * @author Dan Dart
         **/
         _this.hasLeft = function() {
-            return null !== _this.getLeft();
+            return null !== _branches.left;
         };
 
         /**
@@ -88,7 +94,7 @@
          * @author Dan Dart
         **/
         _this.hasRight = function() {
-            return null !== _this.getRight();
+            return null !== _branches.right;
         };
 
         /**
@@ -115,7 +121,7 @@
 
             // If there is a right node, and the search is greater than the root
             // then ask the right to search.
-            if (nSearch < _rootNode.getValue() &&
+            if (nSearch > _rootNode.getValue() &&
                 _this.hasRight()) {
                 return _this.getRight().lookup(nSearch);
             }
