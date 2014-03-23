@@ -104,22 +104,24 @@ Btree.Tree = function(rootNode) {
 
 	/**
 	 * Print that tree.
-	 * Generate an array and populate it with tree structures.
+	 * Currently needs to be printed as a nice diagonal...
 	 *
 	 * @return string
 	 * @author Dan Dart
 	**/
 	_this.print = function() {
-		[str,str,str];
+		var str = '';
+
 		if (null !== _this._branches.left) {
-			// something
+			str += (_this._branches.left.dump());
+		}
+		str += _this.getValue();
+		if (null !== _this._branches.right) {
+			str += (_this._branches.right.dump());
 		}
 
-	};
+		return str;
+	}
 };
 
-var node = new Btree.Node(2);
-	tree = new Btree.Tree(node);
-
-tree.insert(1);
-tree.insert(3);
+module.exports = Btree;
